@@ -1,6 +1,7 @@
 import locale
 import urllib.parse
 import urllib.request
+import logging
 from http.cookies import SimpleCookie
 from pathlib import Path
 
@@ -13,6 +14,9 @@ from PyQt5.QtWidgets import QApplication
 from requests.cookies import RequestsCookieJar
 
 from config import config
+
+log_format = '%(asctime)s %(name)s[%(module)s] %(levelname)s: %(message)s'
+logging.basicConfig(format=log_format, level=logging.INFO)
 
 # 过滤掉一些不需要的 Qt WebEngine 日志输出
 # https://stackoverflow.com/questions/35894171/redirect-qdebug-output-to-file-with-pyqt5
@@ -104,8 +108,15 @@ class MobileBrowser(QWebEngineView):
             $('#password').val('{password}');
             
             if ({auto_submit}) {{
-                $('#loginBtn').addClass('btn-active');
-                $('#loginBtn').click();
+                //等待页面加载，再切换为密码登陆
+                setTimeout(function() {{
+                    //切换为密码登陆
+                    if($('.txt-planBLogin').text() == '账号密码登录'){{
+                        $('.txt-planBLogin').click();
+                    }}
+                    $('#loginBtn').addClass('btn-active');
+                    $('#loginBtn').click();
+                }}, 2000);
             }} else {{
                 $('#username').focus();
             }}
@@ -122,7 +133,7 @@ class MobileBrowser(QWebEngineView):
                 // 等待页面相关组件加载完成，如 jdSlide 等
                 setTimeout(function() {{
                     $('#loginsubmit').click();
-                }}, 1000);
+                }}, 2000);
             }}
             """
 
