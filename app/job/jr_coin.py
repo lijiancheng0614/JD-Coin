@@ -40,6 +40,8 @@ class JrCoin(Daka):
     def is_signed(self):
         signData = self.get_sign_data()
         if signData:
+            if signData['resBusiCode'] == 24:
+                return False
             self.logger.info('今日已打卡 获取钢镚: {}'.format(
                 str(signData['resBusiData']['actualTotalRewardsValue']/100)))
             return True
