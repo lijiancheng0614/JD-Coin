@@ -3,7 +3,7 @@ import os
 import pickle
 import traceback
 from pathlib import Path
-
+import time
 import requests
 
 from config import config
@@ -91,5 +91,10 @@ def proxy_patch():
 if __name__ == '__main__':
     if config.debug and os.getenv('HTTPS_PROXY'):
         proxy_patch()
-
-    main()
+    logging.info('启动程序')
+    while True:
+        localtime = time.localtime(time.time())
+        if localtime.tm_hour == 0:
+            logging.info('开始任务')
+            main()
+        time.sleep(3600)

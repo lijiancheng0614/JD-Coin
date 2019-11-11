@@ -15,7 +15,7 @@
 
 5. 创建配置文件（可选）
 
-6. 运行：`python app/main.py`
+6. 运行：`python3 app/main.py`
 
 <br>
 
